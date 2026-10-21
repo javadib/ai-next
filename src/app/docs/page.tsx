@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { source } from "@/lib/source";
 import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
+import { BRAND } from "@/shared/constants/brand";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("docs");
@@ -12,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: t("homeTitle"),
       description: t("homeMetadataDescription"),
       type: "website",
-      url: "https://omniroute.online/docs",
+      ...(BRAND.docsUrl ? { url: BRAND.docsUrl } : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -71,6 +73,9 @@ const sections = [
 ];
 
 export default async function DocsHomePage() {
+  // White-label: the bundled guides describe the upstream project — send visitors to the
+  // brand docs (or the API explorer) instead.
+  if (!BRAND.showUpstreamLinks) redirect(BRAND.docsUrl || "/docs/api-explorer");
   const t = await getTranslations("docs");
   const pages = source.getPages();
 

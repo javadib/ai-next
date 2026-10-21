@@ -7,6 +7,7 @@ import { getHeaderIconProviderId, providerText } from "../providerPageHelpers";
 import type { ProviderMessageTranslator } from "../providerPageHelpers";
 import type { ProviderNotice } from "@/lib/providers/catalog";
 import { isKimiPartnerProviderId } from "../../featuredProviders";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface ProviderInfo {
   id: string;
@@ -63,7 +64,7 @@ export default function ProviderPageHeader({
   const kimiPartnerLinkNote = providerText(
     t,
     "kimiPartnerLinkNote",
-    "Partner link — supports OmniRoute at no extra cost to you"
+    `Partner link — supports ${BRAND_NAME} at no extra cost to you`
   );
 
   // Resolve the API-key registration link: prefer apiKeyUrl, fall back to

@@ -4,6 +4,8 @@ import path from "path";
 
 export default defineConfig({
   test: {
+    // White-label fork: run the upstream suite in upstream brand mode (tests/_setup/upstreamBrandMode.ts).
+    env: { NEXT_PUBLIC_BRAND_NAME: "OmniRoute", NEXT_PUBLIC_SHOW_UPSTREAM_LINKS: "true" },
     environment: "jsdom",
     globals: true,
     setupFiles: ["./tests/_setup/vitestUiPolyfills.ts"],

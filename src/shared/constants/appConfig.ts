@@ -1,8 +1,9 @@
 import pkg from "../../../package.json" with { type: "json" };
+import { BRAND } from "./brand";
 
 export const APP_CONFIG = {
-  name: "OmniRoute",
-  description: "AI Gateway for Multi-Provider LLMs",
+  name: BRAND.name,
+  description: BRAND.description,
   version: pkg.version,
 };
 

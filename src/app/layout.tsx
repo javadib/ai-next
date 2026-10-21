@@ -8,6 +8,7 @@ import { pickMessages } from "@/i18n/pickMessages";
 import routeNamespaces from "@/i18n/routeNamespaces.generated.json";
 import { getRootLayoutSettings } from "@/lib/db/rootLayoutSettings";
 import type { Viewport } from "next";
+import { BRAND } from "@/shared/constants/brand";
 import { PwaRegister } from "@/shared/components/PwaRegister";
 import { LocaleAutoDetect } from "@/shared/components/LocaleAutoDetect";
 import { HIDDEN_TAB_REVEAL_SCRIPT } from "@/shared/utils/hiddenTabReveal";
@@ -24,9 +25,8 @@ export async function generateMetadata() {
   const customFaviconUrl = settings.customFaviconUrl || settings.customFaviconBase64;
 
   return {
-    title: `${instanceName} — AI Gateway for Multi-Provider LLMs`,
-    description:
-      "OmniRoute is an AI gateway for multi-provider LLMs. One endpoint for all your AI providers.",
+    title: `${instanceName} — ${BRAND.description}`,
+    description: `${instanceName} is an AI gateway for multi-provider LLMs. One endpoint for all your AI providers.`,
     manifest: "/manifest.webmanifest",
     applicationName: instanceName,
     appleWebApp: {

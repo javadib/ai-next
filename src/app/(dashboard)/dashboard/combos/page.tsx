@@ -91,6 +91,7 @@ import { modelFamily } from "@/lib/combos/invariants";
 import { resolveProviderAlias } from "@omniroute/open-sse/services/providerAlias.ts";
 import { resolveServerErrorMessage } from "@/lib/api/serverErrorMessage";
 import { useTranslations } from "next-intl";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 const ModelSelectModal = dynamic(() => import("@/shared/components/ModelSelectModal"), {
   ssr: false,
@@ -1603,7 +1604,7 @@ function ComboUsageGuide({ onHide, onHideForever, onCreateCombo }) {
           {getI18nOrFallback(
             t,
             "usageGuideInvokeOpenrouterNote",
-            "openrouter/auto is a real paid OpenRouter product (Auto Best Available), not an OmniRoute alias — exclude it via Settings → Routing → Hide paid models."
+            `openrouter/auto is a real paid OpenRouter product (Auto Best Available), not an ${BRAND_NAME} alias — exclude it via Settings → Routing → Hide paid models.`
           )}
         </p>
       </div>
@@ -4473,7 +4474,7 @@ function ComboFormModal({
                           help={getI18nOrFallback(
                             t,
                             "contextRelayHandoffThresholdHelp",
-                            "When quota usage reaches this threshold, OmniRoute generates a structured handoff summary before the account is exhausted."
+                            `When quota usage reaches this threshold, ${BRAND_NAME} generates a structured handoff summary before the account is exhausted.`
                           )}
                           showHelp={!isExpertMode}
                         />

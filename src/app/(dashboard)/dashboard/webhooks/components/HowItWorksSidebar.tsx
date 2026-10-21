@@ -1,6 +1,7 @@
 "use client";
 
 import { HmacRecipeBlock } from "./shared/HmacRecipeBlock";
+import { BRAND } from "@/shared/constants/brand";
 
 interface HowItWorksSidebarProps {
   t: (key: string) => string;
@@ -43,15 +44,17 @@ export function HowItWorksSidebar({ t, showCustomNote }: HowItWorksSidebarProps)
       <div className="space-y-1.5 border-t border-border pt-3">
         <p className="text-xs text-text-muted">{t("howItWorks.timeoutNote")}</p>
         <p className="text-xs text-text-muted">{t("howItWorks.retryNote")}</p>
-        <a
-          href="https://docs.omniroute.app/webhooks"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-        >
-          <span className="material-symbols-outlined text-[14px]">menu_book</span>
-          {t("howItWorks.docsLink")}
-        </a>
+        {BRAND.showUpstreamLinks && (
+          <a
+            href="https://docs.omniroute.app/webhooks"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+          >
+            <span className="material-symbols-outlined text-[14px]">menu_book</span>
+            {t("howItWorks.docsLink")}
+          </a>
+        )}
       </div>
     </aside>
   );

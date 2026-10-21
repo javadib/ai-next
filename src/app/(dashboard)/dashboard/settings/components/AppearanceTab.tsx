@@ -13,6 +13,7 @@ import {
   type ComboConfigMode,
 } from "@/shared/constants/comboConfigMode";
 import AccountEmailVisibilitySetting from "./AccountEmailVisibilitySetting";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 export default function AppearanceTab() {
   const { theme, setTheme, isDark } = useTheme();
@@ -523,9 +524,9 @@ export default function AppearanceTab() {
               </div>
               <input
                 type="text"
-                value={settings.instanceName || "OmniRoute"}
+                value={settings.instanceName || BRAND_NAME}
                 onChange={(e) => updateSetting("instanceName", e.target.value)}
-                placeholder="OmniRoute"
+                placeholder={BRAND_NAME}
                 maxLength={100}
                 className="h-10 px-3 rounded-lg bg-surface border border-border text-sm text-text-main focus:outline-none focus:border-primary w-48"
               />

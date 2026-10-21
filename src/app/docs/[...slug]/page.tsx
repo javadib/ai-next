@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { BRAND } from "@/shared/constants/brand";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { DEFAULT_LOCALE, LOCALE_COOKIE } from "@/i18n/config";
@@ -73,6 +74,7 @@ async function tryI18nFallback(slug: string[], locale: string): Promise<string |
 // ── Page component ──────────────────────────────────────────────────────────
 
 export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+  if (!BRAND.showUpstreamLinks) redirect(BRAND.docsUrl || "/docs/api-explorer");
   const params = await props.params;
   const { source } = await import("../../../lib/source");
   const [{ DocsPage, DocsBody }, { default: defaultMdxComponents }] = await Promise.all([

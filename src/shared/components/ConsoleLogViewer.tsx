@@ -13,6 +13,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { copyToClipboard } from "@/shared/utils/clipboard";
 import { isPinnedToBottom } from "@/shared/utils/scrollFollow";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface LogEntry {
   timestamp: string;
@@ -272,7 +273,7 @@ export default function ConsoleLogViewer() {
           <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
           <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
           <span className="ml-3 text-[#8b949e] text-[11px]">
-            OmniRoute — {tv("applicationConsole")}
+            {BRAND_NAME} — {tv("applicationConsole")}
           </span>
         </div>
 

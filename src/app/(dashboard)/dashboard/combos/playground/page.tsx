@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import ComboPlaygroundClient from "./ComboPlaygroundClient";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 export const metadata: Metadata = {
-  title: "OmniRoute — Combo Playground",
+  title: `${BRAND_NAME} — Combo Playground`,
   description: "Simulate combo routing paths visually",
 };
 

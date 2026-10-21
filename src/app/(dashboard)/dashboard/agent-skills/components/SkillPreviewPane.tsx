@@ -3,6 +3,8 @@
 import { useCallback } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
+import { BRAND } from "@/shared/constants/brand";
+import { getAgentSkillBlobUrl, getAgentSkillRawUrl } from "@/shared/constants/agentSkills";
 
 // Lazy-load react-markdown to reduce initial bundle size.
 const ReactMarkdown = dynamic(() => import("react-markdown"), {
@@ -43,7 +45,7 @@ export function SkillPreviewPane({
 
   const handleCopyRawUrl = useCallback(async () => {
     if (!skillId) return;
-    const rawUrl = `https://raw.githubusercontent.com/diegosouzapw/OmniRoute/refs/heads/main/skills/${skillId}/SKILL.md`;
+    const rawUrl = getAgentSkillRawUrl(skillId);
     try {
       await navigator.clipboard.writeText(rawUrl);
     } catch {
@@ -51,9 +53,11 @@ export function SkillPreviewPane({
     }
   }, [skillId]);
 
-  const githubUrl = skillId
-    ? `https://github.com/diegosouzapw/OmniRoute/blob/main/skills/${skillId}/SKILL.md`
-    : null;
+  // White-label: the repository link is hidden unless upstream links are enabled or a custom
+  // skills repository is configured.
+  const showRepoLink =
+    BRAND.showUpstreamLinks || Boolean(process.env.NEXT_PUBLIC_AGENT_SKILLS_REPO);
+  const githubUrl = skillId && showRepoLink ? getAgentSkillBlobUrl(skillId) : null;
 
   // Empty state
   if (!skillId) {

@@ -4,6 +4,7 @@ import type {
   SidebarSectionChild,
   SidebarSectionDefinition,
 } from "./types";
+import { BRAND } from "@/shared/constants/brand";
 
 // ─── Item arrays ────────────────────────────────────────────────────────────
 
@@ -796,30 +797,42 @@ const CONFIGURATION_ITEMS: readonly SidebarItemDefinition[] = [
   },
 ];
 
+// White-label: the issue tracker and changelog belong to the upstream project, so they are
+// replaced by the brand support link (when configured) or hidden.
 const HELP_ITEMS: readonly SidebarItemDefinition[] = [
   {
     id: "docs",
-    href: "/docs",
+    href: BRAND.docsUrl || "/docs",
     i18nKey: "docs",
     subtitleKey: "docsSubtitle",
     icon: "menu_book",
     external: true,
   },
-  {
-    id: "issues",
-    href: "https://github.com/diegosouzapw/OmniRoute/issues",
-    i18nKey: "issues",
-    subtitleKey: "issuesSubtitle",
-    icon: "bug_report",
-    external: true,
-  },
-  {
-    id: "changelog",
-    href: "/dashboard/changelog",
-    i18nKey: "changelog",
-    subtitleKey: "changelogSubtitle",
-    icon: "campaign",
-  },
+  ...(BRAND.showUpstreamLinks || BRAND.supportUrl
+    ? ([
+        {
+          id: "issues",
+          href: BRAND.showUpstreamLinks
+            ? "https://github.com/diegosouzapw/OmniRoute/issues"
+            : BRAND.supportUrl,
+          i18nKey: "issues",
+          subtitleKey: "issuesSubtitle",
+          icon: "bug_report",
+          external: true,
+        },
+      ] satisfies SidebarItemDefinition[])
+    : []),
+  ...(BRAND.showUpstreamLinks
+    ? ([
+        {
+          id: "changelog",
+          href: "/dashboard/changelog",
+          i18nKey: "changelog",
+          subtitleKey: "changelogSubtitle",
+          icon: "campaign",
+        },
+      ] satisfies SidebarItemDefinition[])
+    : []),
 ];
 
 // ─── Sections ────────────────────────────────────────────────────────────────

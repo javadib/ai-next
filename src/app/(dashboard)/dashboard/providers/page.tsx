@@ -68,6 +68,8 @@ import {
   buildCompactProviderEntriesForPage,
   getCompactProviderAuthType,
 } from "./providerCompactMode";
+import { BRAND } from "@/shared/constants/brand";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 type DashboardProviderInfo = {
   id?: string;
@@ -898,21 +900,23 @@ function ProvidersPageContent() {
               </h2>
               <p className="text-sm text-text-muted mt-2 max-w-md">
                 {t("addFirstProviderDesc") ||
-                  "Connect an AI provider to start routing requests through OmniRoute. You can use free providers, API keys, or OAuth accounts."}
+                  `Connect an AI provider to start routing requests through ${BRAND_NAME}. You can use free providers, API keys, or OAuth accounts.`}
               </p>
               <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
                 <Button icon="add" onClick={() => router.push("/dashboard/providers/new")}>
                   {providerText(t, "onboardingWizard", "Provider Onboarding Wizard")}
                 </Button>
-                <a
-                  href="https://github.com/diegosouzapw/OmniRoute#-documentation"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg border border-border text-text-muted hover:text-text-main hover:bg-bg-subtle transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[16px]">help</span>
-                  {t("learnMore") || "Learn more"}
-                </a>
+                {BRAND.showUpstreamLinks && (
+                  <a
+                    href="https://github.com/diegosouzapw/OmniRoute#-documentation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-lg border border-border text-text-muted hover:text-text-main hover:bg-bg-subtle transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">help</span>
+                    {t("learnMore") || "Learn more"}
+                  </a>
+                )}
               </div>
             </div>
           </Card>

@@ -2,8 +2,13 @@ import { getRequestConfig } from "next-intl/server";
 import { cookies, headers } from "next/headers";
 import { LOCALES, DEFAULT_LOCALE, LOCALE_COOKIE, LOCALE_ALIASES } from "./config";
 import { resolveRequestedLocale } from "./resolveRequestedLocale";
+import { applyBrandToMessages, BRAND, UPSTREAM_BRAND_NAME } from "@/shared/constants/brand";
+import { getRootLayoutSettings } from "@/lib/db/rootLayoutSettings";
 
 const FALLBACK_LOCALE = "en";
+
+/** Branded message trees per locale + brand name; the source JSON never changes at runtime. */
+const brandedMessagesCache = new Map<string, Record<string, unknown>>();
 
 /**
  * Sentinel prefix written by `scripts/i18n/sync-ui-keys.mjs` when backfilling a
@@ -160,8 +165,21 @@ export default getRequestConfig(async () => {
     mergedMessages = { ...enMessages, ...mergedMessages };
   }
 
+  // 5. White-label: swap the upstream product name for the instance name (Settings →
+  //    Appearance) or, when unset, the build-time brand name.
+  const { instanceName } = await getRootLayoutSettings();
+  const brandName =
+    instanceName && instanceName !== UPSTREAM_BRAND_NAME ? instanceName : BRAND.name;
+
+  const cacheKey = `${locale}\u0000${brandName}`;
+  let brandedMessages = brandedMessagesCache.get(cacheKey);
+  if (!brandedMessages) {
+    brandedMessages = applyBrandToMessages(mergedMessages, brandName);
+    brandedMessagesCache.set(cacheKey, brandedMessages);
+  }
+
   return {
     locale,
-    messages: mergedMessages,
+    messages: brandedMessages,
   };
 });

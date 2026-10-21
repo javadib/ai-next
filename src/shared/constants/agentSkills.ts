@@ -4,8 +4,9 @@
 
 import type { AgentSkill, SkillArea, SkillCategory } from "@/lib/agentSkills/types";
 
-const REPO = "diegosouzapw/OmniRoute";
-const BRANCH = "main";
+// White-label: point at your own fork with NEXT_PUBLIC_AGENT_SKILLS_REPO / _BRANCH.
+const REPO = process.env.NEXT_PUBLIC_AGENT_SKILLS_REPO?.trim() || "diegosouzapw/OmniRoute";
+const BRANCH = process.env.NEXT_PUBLIC_AGENT_SKILLS_BRANCH?.trim() || "main";
 const SKILL_PATH = "skills";
 
 export const AGENT_SKILLS_RAW_BASE = `https://raw.githubusercontent.com/${REPO}/refs/heads/${BRANCH}/${SKILL_PATH}`;

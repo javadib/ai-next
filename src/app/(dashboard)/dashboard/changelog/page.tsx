@@ -5,8 +5,12 @@ import { useTranslations } from "next-intl";
 import { Card, SegmentedControl } from "@/shared/components";
 import ChangelogViewer from "./components/ChangelogViewer";
 import NewsViewer from "./components/NewsViewer";
+import { redirect } from "next/navigation";
+import { BRAND } from "@/shared/constants/brand";
 
 export default function ChangelogPage() {
+  // White-label: news and changelog are pulled from the upstream project.
+  if (!BRAND.showUpstreamLinks) redirect("/home");
   const t = useTranslations("changelogPage");
   const [activeTab, setActiveTab] = useState<"news" | "changelog">("news");
 

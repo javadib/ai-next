@@ -9,6 +9,7 @@ import CliStatusBadge from "./CliStatusBadge";
 import { Button, Card, ManualConfigModal, ModelSelectModal } from "@/shared/components";
 import ProviderIcon from "@/shared/components/ProviderIcon";
 import type { ToolBatchStatus } from "@/shared/types/cliBatchStatus";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 const SETTINGS_ENDPOINT = "/api/cli-tools/grok-build-settings";
 const PRESETS_KEY = "omniroute.grokBuildEndpointPresets";
@@ -476,7 +477,7 @@ export default function GrokBuildToolCard({
               value={effectiveKeyId}
               onChange={(event) => setSelectedKeyId(event.target.value)}
             >
-              <option value="">Use the OmniRoute default key</option>
+              <option value="">Use the {BRAND_NAME} default key</option>
               {apiKeys.map((key) => (
                 <option key={key.id} value={key.id}>
                   {key.key || key.name || key.id}

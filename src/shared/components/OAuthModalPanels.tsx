@@ -8,6 +8,7 @@ import { useCopyToClipboard } from "@/shared/hooks/useCopyToClipboard";
 
 import Button from "./Button";
 import Input from "./Input";
+import { BRAND } from "@/shared/constants/brand";
 
 export function formatDeviceCodeRemaining(seconds: number): string {
   const safeSeconds = Math.max(0, Math.floor(seconds));
@@ -268,16 +269,20 @@ function OAuthGoogleLoopbackNotice({ hint }: { hint: GoogleLoopbackHint }) {
 
       <p className="text-xs text-text-muted">
         {t.rich("googleLoopbackHeadlessAlt", {
-          a: (chunks) => (
-            <a
-              href="https://github.com/diegosouzapw/OmniRoute#oauth-on-a-remote-server"
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              {chunks}
-            </a>
-          ),
+          // White-label: the guide lives in the upstream README — plain text unless enabled.
+          a: (chunks) =>
+            BRAND.showUpstreamLinks ? (
+              <a
+                href="https://github.com/diegosouzapw/OmniRoute#oauth-on-a-remote-server"
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                {chunks}
+              </a>
+            ) : (
+              <>{chunks}</>
+            ),
         })}
       </p>
     </div>
@@ -372,8 +377,8 @@ export function OAuthManualInputPanel({
           {provider === "zed-hosted" && (
             <p className="text-xs text-amber-500 mb-2">
               After signing in, Zed redirects to a local address like{" "}
-              <code className="font-mono">http://127.0.0.1:&lt;port&gt;/?user_id=...</code> which the
-              browser may show as unreachable — that is expected. Copy the FULL URL from the
+              <code className="font-mono">http://127.0.0.1:&lt;port&gt;/?user_id=...</code> which
+              the browser may show as unreachable — that is expected. Copy the FULL URL from the
               browser address bar (the access token is inside it) and paste it above.
             </p>
           )}

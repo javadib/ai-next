@@ -1,4 +1,5 @@
 import { getExistingDbInstance } from "./singleton";
+import { BRAND } from "@/shared/constants/brand";
 
 export interface RootLayoutSettings {
   instanceName: string;
@@ -21,7 +22,7 @@ const ROOT_LAYOUT_SETTING_KEYS = [
 const ROOT_LAYOUT_SETTING_KEY_SET = new Set<string>(ROOT_LAYOUT_SETTING_KEYS);
 
 const DEFAULT_ROOT_LAYOUT_SETTINGS: RootLayoutSettings = {
-  instanceName: "OmniRoute",
+  instanceName: BRAND.name,
   customFaviconUrl: "",
   customFaviconBase64: "",
 };

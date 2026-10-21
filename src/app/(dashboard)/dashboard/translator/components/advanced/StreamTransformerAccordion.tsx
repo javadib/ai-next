@@ -6,12 +6,13 @@ import { useTranslations } from "next-intl";
 import { Button, Card } from "@/shared/components";
 import { copyToClipboard } from "@/shared/utils/clipboard";
 import { cn } from "@/shared/utils/cn";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 // ─── Sample payloads ──────────────────────────────────────────────────────────
 
 const SAMPLE_TEXT = `data: {"id":"chatcmpl_demo","object":"chat.completion.chunk","created":1745366400,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{"role":"assistant","content":"Hello"},"finish_reason":null}]}
 
-data: {"id":"chatcmpl_demo","object":"chat.completion.chunk","created":1745366400,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{"content":" from OmniRoute"},"finish_reason":null}]}
+data: {"id":"chatcmpl_demo","object":"chat.completion.chunk","created":1745366400,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{"content":" from ${BRAND_NAME}"},"finish_reason":null}]}
 
 data: {"id":"chatcmpl_demo","object":"chat.completion.chunk","created":1745366400,"model":"gpt-4o-mini","choices":[{"index":0,"delta":{},"finish_reason":"stop"}],"usage":{"prompt_tokens":12,"completion_tokens":4,"total_tokens":16}}
 
@@ -281,7 +282,7 @@ export default function StreamTransformerAccordion({
                 <p>
                   {translateOrFallback(
                     "streamTransformerDescription",
-                    "Paste a chat completions SSE stream, run it through OmniRoute's Responses transformer, and inspect the emitted response.* events before wiring a client."
+                    `Paste a chat completions SSE stream, run it through ${BRAND_NAME}'s Responses transformer, and inspect the emitted response.* events before wiring a client.`
                   )}
                 </p>
               </div>

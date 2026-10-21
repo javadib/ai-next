@@ -12,7 +12,7 @@ import {
   toggleExpandedSection,
 } from "@/shared/utils/sidebarExpansionState";
 import { APP_CONFIG } from "@/shared/constants/appConfig";
-import OmniRouteLogo from "./OmniRouteLogo";
+import BrandLogo from "./BrandLogo";
 import Button from "./Button";
 import Input from "./Input";
 import { ConfirmModal } from "./Modal";
@@ -693,7 +693,7 @@ export default function Sidebar({
               {customLogo ? (
                 <img src={customLogo} alt="" className="size-6 object-contain" />
               ) : (
-                <OmniRouteLogo size={22} />
+                <BrandLogo size={22} />
               )}
             </div>
             {!collapsed && (

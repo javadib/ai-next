@@ -20,6 +20,7 @@ import { useDevinAgenticAuthStatus } from "../hooks/useDevinAgenticAuthStatus";
 import { CategoryDot } from "./CategoryDot";
 import { isCheaperInferenceProviderId, isKimiPartnerProviderId } from "../featuredProviders";
 import { useOpenRouterProviderStat } from "../context/openRouterProviderStatsContext";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface ProviderStats {
   total?: number;
@@ -367,7 +368,7 @@ const ProviderCard = forwardRef<ProviderCardHandle, ProviderCardProps>(function 
       title={providerText(
         t,
         "kimiOfficialSupporterTooltip",
-        "Kimi (Moonshot AI) is OmniRoute's founding Open Source Friend"
+        `Kimi (Moonshot AI) is ${BRAND_NAME}'s founding Open Source Friend`
       )}
     >
       <span className="material-symbols-outlined text-[10px] leading-none">verified</span>
@@ -385,7 +386,7 @@ const ProviderCard = forwardRef<ProviderCardHandle, ProviderCardProps>(function 
       title={providerText(
         t,
         "cheaperInferenceSupporterTooltip",
-        "Cheaper Inference backs OmniRoute as an Open Source Friend"
+        `Cheaper Inference backs ${BRAND_NAME} as an Open Source Friend`
       )}
     >
       <span className="material-symbols-outlined text-[10px] leading-none">verified</span>

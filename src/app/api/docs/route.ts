@@ -18,13 +18,15 @@
  */
 export const dynamic = "force-static";
 
+import { BRAND_NAME } from "@/shared/constants/brand";
+
 const REDOC_HTML = `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OmniRoute API Reference</title>
-    <meta name="description" content="Redoc-rendered OpenAPI 3.0 spec for the OmniRoute v1 API." />
+    <title>${BRAND_NAME} API Reference</title>
+    <meta name="description" content="Redoc-rendered OpenAPI 3.0 spec for the ${BRAND_NAME} v1 API." />
     <link rel="icon" href="/favicon.ico" />
     <style>
       body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }

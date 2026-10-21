@@ -1,10 +1,5 @@
 const CACHE_NAME = "omniroute-pwa-v3";
-const APP_SHELL = [
-  "/",
-  "/manifest.webmanifest",
-  "/icon-512.png",
-  "/apple-touch-icon.png",
-];
+const APP_SHELL = ["/", "/manifest.webmanifest", "/icon-512.png", "/apple-touch-icon.png"];
 const EXCLUDED_PATH_PREFIXES = ["/api/", "/a2a", "/dashboard"];
 
 function pathIsExcluded(pathname) {
@@ -99,10 +94,10 @@ self.addEventListener("push", (event) => {
   try {
     data = event.data ? event.data.json() : {};
   } catch {
-    data = { title: "OmniRoute", body: event.data?.text() || "New notification" };
+    data = { title: "AI Next", body: event.data?.text() || "New notification" };
   }
 
-  const title = data.title || "OmniRoute";
+  const title = data.title || "AI Next";
   const options = {
     body: data.body || "",
     icon: data.icon || "/icon-512.png",

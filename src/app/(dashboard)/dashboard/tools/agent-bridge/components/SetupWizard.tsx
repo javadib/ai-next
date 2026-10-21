@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import type { AgentStateEntry, AgentBridgeServerState } from "../AgentBridgePageClient";
 import type { MitmTargetView } from "@/mitm/types";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface SetupWizardProps {
   target: MitmTargetView;
@@ -303,7 +304,7 @@ export function SetupWizard({
                   {selectedModels.size > 0 && (
                     <p className="text-xs text-text-muted">
                       {selectedModels.size} model{selectedModels.size !== 1 ? "s" : ""} selected.
-                      You&apos;ll map them to OmniRoute models in the next screen.
+                      You&apos;ll map them to {BRAND_NAME} models in the next screen.
                     </p>
                   )}
                 </div>

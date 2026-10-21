@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Card, Button, ModelSelectModal } from "@/shared/components";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface Role {
   id: string;
@@ -454,7 +455,7 @@ export default function HermesAgentToolCard({
                   (current?.base_url || "").includes("localhost");
 
                 if (isOmni) {
-                  badge = { label: "OmniRoute", pending: false, outsideOmniRoute: false };
+                  badge = { label: BRAND_NAME, pending: false, outsideOmniRoute: false };
                 } else {
                   const realProvider = current.provider || t("other");
                   badge = {

@@ -42,6 +42,7 @@ import { ApiKeyUsageLimitCard } from "./components/ApiKeyUsageLimitCard";
 import { MetricCard } from "./components/MetricCard";
 import { TopListCard } from "./components/TopListCard";
 import { useApiKeyUsageLimits } from "./useApiKeyUsageLimits";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface UsageAnalyticsSummary {
   totalCost: number;
@@ -225,7 +226,7 @@ function generateCSV(analytics: UsageAnalyticsPayload, locale: string): string {
   // billed-cost, which is what the API itself does with the query parameter.
   const includesEstimates = analytics.includesFlatRateEstimates === true;
 
-  lines.push("# OmniRoute Cost Report");
+  lines.push(`# ${BRAND_NAME} Cost Report`);
   lines.push(`# Generated: ${new Date().toISOString()}`);
   if (includesEstimates) {
     lines.push(`# ${FLAT_RATE_ESTIMATE_CSV_NOTE}`);

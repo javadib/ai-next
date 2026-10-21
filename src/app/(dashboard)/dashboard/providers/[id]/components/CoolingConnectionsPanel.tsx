@@ -41,6 +41,7 @@ import type { ConnectionRowConnection } from "./ConnectionRow";
 // (352 providers), shared provider constants, requestDefaults — into this tiny
 // client component for one string helper. Import from the real home instead.
 import { providerText } from "../providerCredentialText";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 export interface CoolingConnectionsPanelProps {
   readonly connections: readonly ConnectionRowConnection[];
@@ -139,7 +140,7 @@ export default function CoolingConnectionsPanel(props: CoolingConnectionsPanelPr
         {providerText(
           t,
           "coolingConnectionsDescription",
-          "These connections are cooling after their last request. OmniRoute will skip them until the timer expires — no manual disable required."
+          `These connections are cooling after their last request. ${BRAND_NAME} will skip them until the timer expires — no manual disable required.`
         )}
       </p>
       <ul className="space-y-1">

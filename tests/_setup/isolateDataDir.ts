@@ -17,6 +17,7 @@
 // Giving each process its own DATA_DIR under the OS temp dir removes the shared file,
 // so concurrent test processes never collide. Tests that set DATA_DIR explicitly keep
 // winning — this only fills in an isolated default when none was chosen.
+import "./upstreamBrandMode.ts";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";

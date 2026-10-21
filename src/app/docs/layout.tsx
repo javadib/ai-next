@@ -3,6 +3,7 @@ import { DocsLayout } from "fumadocs-ui/layouts/docs";
 import { source } from "@/lib/source";
 import type { ReactNode } from "react";
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import { BRAND } from "@/shared/constants/brand";
 import { Suspense } from "react";
 import LanguageSelector from "@/shared/components/LanguageSelector";
 import { getTranslations } from "next-intl/server";
@@ -45,8 +46,16 @@ export default async function Layout({ children }: { children: ReactNode }) {
         secondary: true,
       },
     ],
-    githubUrl: "https://github.com/diegosouzapw/OmniRoute",
+    ...(BRAND.showUpstreamLinks ? { githubUrl: "https://github.com/diegosouzapw/OmniRoute" } : {}),
   };
+
+  // White-label: hide the upstream guides from the sidebar; only the API explorer stays.
+  const docsTree: typeof source.pageTree = BRAND.showUpstreamLinks
+    ? source.pageTree
+    : {
+        name: BRAND.name,
+        children: [{ type: "page", name: t("apiExplorerTitle"), url: "/docs/api-explorer" }],
+      };
 
   return (
     <RootProvider
@@ -60,7 +69,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
         },
       }}
     >
-      <DocsLayout tree={source.pageTree} {...docsLayoutOptions}>
+      <DocsLayout tree={docsTree} {...docsLayoutOptions}>
         {children}
       </DocsLayout>
     </RootProvider>

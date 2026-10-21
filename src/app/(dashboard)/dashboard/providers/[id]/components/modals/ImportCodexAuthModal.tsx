@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNotificationStore } from "@/store/notificationStore";
 import { useTranslations } from "next-intl";
 import { Button, Modal, Select } from "@/shared/components";
+import { BRAND_NAME } from "@/shared/constants/brand";
 interface ImportCodexAuthModalProps {
   onClose: () => void;
   onSuccess: () => void;
@@ -392,7 +393,7 @@ export function ImportCodexAuthModal({ onClose, onSuccess }: ImportCodexAuthModa
                 />
                 <p className="text-xs text-text-muted">
                   {t("codexImportFileHint") ||
-                    "Select the auth.json file exported from Codex or OmniRoute."}
+                    `Select the auth.json file exported from Codex or ${BRAND_NAME}.`}
                 </p>
               </div>
             )}

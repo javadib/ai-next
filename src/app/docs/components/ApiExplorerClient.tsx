@@ -8,6 +8,7 @@ import {
   OPENAPI_VERSION,
   type OpenApiEndpoint,
 } from "../lib/openapi.generated";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 const METHOD_COLORS: Record<string, string> = {
   GET: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
@@ -45,7 +46,7 @@ const EXAMPLE_BODIES: Record<string, string> = {
     2
   ),
   "/api/v1/responses": JSON.stringify(
-    { model: "openai/gpt-4o-mini", input: "What is OmniRoute?" },
+    { model: "openai/gpt-4o-mini", input: `What is ${BRAND_NAME}?` },
     null,
     2
   ),

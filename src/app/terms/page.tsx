@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import { BRAND } from "@/shared/constants/brand";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("legal");
@@ -73,20 +74,27 @@ export default function TermsPage() {
           </section>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/[0.06] text-sm text-text-muted">
-          <p>
-            {t("questionsVisit")}{" "}
-            <a
-              href="https://github.com/diegosouzapw/OmniRoute"
-              className="text-primary hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("githubRepository")}
-            </a>
-            .
-          </p>
-        </div>
+        {(BRAND.showUpstreamLinks || BRAND.supportUrl) && (
+          <div className="mt-12 pt-8 border-t border-white/[0.06] text-sm text-text-muted">
+            <p>
+              {t("questionsVisit")}{" "}
+              {/* White-label: point questions at the brand support URL instead of the upstream repo. */}
+              <a
+                href={
+                  BRAND.showUpstreamLinks
+                    ? "https://github.com/diegosouzapw/OmniRoute"
+                    : BRAND.supportUrl
+                }
+                className="text-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {BRAND.showUpstreamLinks ? t("githubRepository") : BRAND.supportUrl}
+              </a>
+              .
+            </p>
+          </div>
+        )}
       </div>
     </main>
   );

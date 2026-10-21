@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Input, Modal } from "@/shared/components";
 import { providerText, type ProviderMessageTranslator } from "../providerPageHelpers";
 import { extractErrorMessage } from "@/shared/utils/upstreamError";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 /**
  * VolcengineConnectModal — phone/SMS-code login for the Volcano Engine console.
@@ -399,7 +400,7 @@ export default function VolcengineConnectModal({
               {providerText(
                 t,
                 "volcAutoLoginDesc",
-                "Enter your phone number. OmniRoute sends a verification code via the Volcano Engine console and extracts the session cookies automatically — no browser interaction needed."
+                `Enter your phone number. ${BRAND_NAME} sends a verification code via the Volcano Engine console and extracts the session cookies automatically — no browser interaction needed.`
               )}
             </p>
             <Input

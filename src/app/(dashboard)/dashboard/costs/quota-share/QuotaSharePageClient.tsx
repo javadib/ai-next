@@ -15,6 +15,7 @@ import QuotaConceptCard from "./components/QuotaConceptCard";
 import QuotaEndpointsCard from "./components/QuotaEndpointsCard";
 import PoolCard from "./components/PoolCard";
 import PoolWizard from "./components/PoolWizard";
+import { BRAND } from "@/shared/constants/brand";
 
 // ────────────────────────────────────────────────────────────────────────────
 // Local types (display layer only)
@@ -455,15 +456,17 @@ export default function QuotaSharePageClient() {
         <span className="flex-1">
           <span className="font-semibold">{t("betaTitle")}</span> — {t("betaText")}
         </span>
-        <a
-          href="https://github.com/diegosouzapw/OmniRoute/issues/new?labels=quota-share,beta&title=%5Bquota-share%5D%20"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="shrink-0 inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-300 hover:underline"
-        >
-          <span className="material-symbols-outlined text-[14px]">bug_report</span>
-          {t("betaReportLink")}
-        </a>
+        {BRAND.showUpstreamLinks && (
+          <a
+            href="https://github.com/diegosouzapw/OmniRoute/issues/new?labels=quota-share,beta&title=%5Bquota-share%5D%20"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 inline-flex items-center gap-1 font-medium text-amber-600 dark:text-amber-300 hover:underline"
+          >
+            <span className="material-symbols-outlined text-[14px]">bug_report</span>
+            {t("betaReportLink")}
+          </a>
+        )}
       </div>
 
       {/* Group bar */}

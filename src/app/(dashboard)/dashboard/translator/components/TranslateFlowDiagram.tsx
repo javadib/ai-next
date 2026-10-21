@@ -3,6 +3,7 @@
 import { useCallback, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import Tooltip from "@/shared/components/Tooltip";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 interface FlowNodeProps {
   icon: string;
@@ -120,7 +121,7 @@ export default function TranslateFlowDiagram() {
         example={tr("conceptDiagramExampleTarget", "Gemini")}
         tooltipContent={tr(
           "conceptDiagramTargetTooltip",
-          "The provider connected in OmniRoute that actually responds, such as Google Gemini or Anthropic."
+          `The provider connected in ${BRAND_NAME} that actually responds, such as Google Gemini or Anthropic.`
         )}
       />
     </div>

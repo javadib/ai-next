@@ -35,6 +35,7 @@ import {
   type ContextBudgetConfig,
 } from "../../../../../../open-sse/services/compression/adaptiveCompression/types.ts";
 import { getAdaptiveTargetSummary } from "./adaptiveTargetLabel.ts";
+import { BRAND } from "@/shared/constants/brand";
 
 type CavemanIntensity = "lite" | "full" | "ultra";
 
@@ -579,18 +580,20 @@ export default function CompressionPanel() {
           <div>
             <h3 className="text-lg font-semibold">{t("compressionTitle")}</h3>
             <p className="text-sm text-text-muted">{t("compressionDesc")}</p>
-            <a
-              href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/compression/COMPRESSION_GUIDE.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-testid="compression-guide-link"
-              className="mt-0.5 inline-flex items-center gap-1 text-xs text-primary hover:underline"
-            >
-              {t("compressionGuidanceFullGuideLink")}
-              <span className="material-symbols-outlined text-[12px]" aria-hidden="true">
-                open_in_new
-              </span>
-            </a>
+            {BRAND.showUpstreamLinks && (
+              <a
+                href="https://github.com/diegosouzapw/OmniRoute/blob/main/docs/compression/COMPRESSION_GUIDE.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="compression-guide-link"
+                className="mt-0.5 inline-flex items-center gap-1 text-xs text-primary hover:underline"
+              >
+                {t("compressionGuidanceFullGuideLink")}
+                <span className="material-symbols-outlined text-[12px]" aria-hidden="true">
+                  open_in_new
+                </span>
+              </a>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-3">

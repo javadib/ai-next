@@ -12,6 +12,7 @@ import McpDashboardPage from "./components/MCPDashboard";
 import NotionSourceCard from "./components/NotionSourceCard";
 import ObsidianSourceCard from "./components/ObsidianSourceCard";
 import VscodeTokenAliasCard from "./VscodeTokenAliasCard";
+import { BRAND_NAME } from "@/shared/constants/brand";
 
 const BUILD_TIME_CLOUD_URL = process.env.NEXT_PUBLIC_CLOUD_URL || null;
 const CLOUD_ACTION_TIMEOUT_MS = 15000;
@@ -843,7 +844,7 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
           type: "info",
           message: translateOrFallback(
             "tailscaleWaitingForLogin",
-            "Complete the Tailscale login in the opened browser tab. OmniRoute will retry automatically."
+            `Complete the Tailscale login in the opened browser tab. ${BRAND_NAME} will retry automatically.`
           ),
         });
 
@@ -871,7 +872,7 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
           type: "info",
           message: translateOrFallback(
             "tailscaleWaitingForFunnel",
-            "Enable Funnel for this device in the opened browser tab. OmniRoute will keep polling."
+            `Enable Funnel for this device in the opened browser tab. ${BRAND_NAME} will keep polling.`
           ),
         });
 
@@ -2137,7 +2138,7 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
             <p className="text-sm mt-2">
               {translateOrFallback(
                 "cloudUploadWarning",
-                "Cloud sync is disabled by default on new installations. Enabling it uploads provider API keys, OAuth access/refresh tokens, OmniRoute API keys, and configuration to the destination above, now and during future syncs. This is separate from local Storage backups. Only enable it if you trust that server."
+                `Cloud sync is disabled by default on new installations. Enabling it uploads provider API keys, OAuth access/refresh tokens, ${BRAND_NAME} API keys, and configuration to the destination above, now and during future syncs. This is separate from local Storage backups. Only enable it if you trust that server.`
               )}
             </p>
             <label className="flex items-start gap-2 mt-3 text-sm">
@@ -2297,7 +2298,7 @@ export default function APIPageClient({ machineId }: Readonly<APIPageClientProps
             <p className="text-sm font-medium text-blue-300">
               {translateOrFallback(
                 "tailscaleInstallIntro",
-                "Installs Tailscale on this machine and prepares OmniRoute to enable Funnel."
+                `Installs Tailscale on this machine and prepares ${BRAND_NAME} to enable Funnel.`
               )}
             </p>
             <p className="mt-2 text-sm text-blue-200/80">
