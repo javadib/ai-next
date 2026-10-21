@@ -42,7 +42,7 @@ test("globals.css adds the shared identity tokens", () => {
   assert.match(globalsCss, /--radius:\s*14px/);
   assert.match(
     globalsCss,
-    /--grad-brand:\s*linear-gradient\(135deg,\s*var\(--color-primary\),\s*var\(--color-accent-light\)\)/
+    /--grad-brand:\s*linear-gradient\(\s*135deg,\s*var\(--color-brand-green\),\s*var\(--color-brand-turquoise\),\s*var\(--color-accent-light\)\s*\)/
   );
   // exposed to Tailwind as bg-surface-2 for later phases
   assert.match(globalsCss, /--color-surface-2:\s*var\(--surface-2\)/);

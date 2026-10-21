@@ -93,7 +93,7 @@ describe("Electron hidden-start window lifecycle", () => {
     // #10328 added a headless guard ahead of the lazy-open call; second-instance
     // must still route through showMainWindow() once past that guard.
     assert.match(mainSource, /app\.on\("second-instance", \(\) => \{[\s\S]*?showMainWindow\(\);/);
-    assert.match(mainSource, /label: "Open OmniRoute",\s*click: \(\) => showMainWindow\(\)/);
+    assert.match(mainSource, /label: "Open AI Next",\s*click: \(\) => showMainWindow\(\)/);
     assert.match(mainSource, /tray\.on\("double-click", \(\) => showMainWindow\(\)\);/);
     assert.match(mainSource, /app\.on\("activate", \(\) => \{[\s\S]*?showMainWindow\(\);/);
   });

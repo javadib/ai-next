@@ -322,7 +322,7 @@ function setupAutoUpdater() {
 
     if (Notification.isSupported()) {
       const notification = new Notification({
-        title: "OmniRoute Update Ready",
+        title: "AI Next Update Ready",
         body: `Version ${info.version} is ready to install. Click to restart.`,
       });
       notification.on("click", () => {
@@ -433,7 +433,7 @@ function createWindow({ showWhenReady = true } = {}) {
     height: 900,
     minWidth: 1024,
     minHeight: 700,
-    title: "OmniRoute",
+    title: "AI Next",
     icon: path.join(RESOURCES_PATH, "assets", "icon.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -546,7 +546,7 @@ function createTray() {
 
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: "Open OmniRoute",
+      label: "Open AI Next",
       click: () => showMainWindow(),
     },
     {
@@ -613,7 +613,7 @@ function createTray() {
     },
   ]);
 
-  tray.setToolTip("OmniRoute");
+  tray.setToolTip("AI Next");
   tray.setContextMenu(contextMenu);
 
   tray.on("double-click", () => showMainWindow());
@@ -961,8 +961,8 @@ function enableLinuxDesktopAutostart() {
       [
         "[Desktop Entry]",
         "Type=Application",
-        "Name=OmniRoute",
-        "Comment=OmniRoute Desktop Client",
+        "Name=AI Next",
+        "Comment=AI Next Desktop Client",
         `Exec="${execPath}" --hidden`,
         "Terminal=false",
         "Hidden=false",

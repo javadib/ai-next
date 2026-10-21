@@ -70,7 +70,7 @@ describe("Electron main-process close policy wiring", () => {
     );
     assert.ok(secondInstanceHandler.includes("showMainWindow()"));
     assert.ok(secondInstanceHandler.includes("if (isHeadless) return"));
-    assert.match(mainSrc, /label: "Open OmniRoute",\s*click: \(\) => showMainWindow\(\)/);
+    assert.match(mainSrc, /label: "Open AI Next",\s*click: \(\) => showMainWindow\(\)/);
     assert.match(mainSrc, /tray\.on\("double-click", \(\) => showMainWindow\(\)\)/);
     assert.match(
       mainSrc,

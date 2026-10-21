@@ -10,6 +10,7 @@ import Button from "@/shared/components/Button";
 import Input from "@/shared/components/Input";
 import { useRouter } from "next/navigation";
 import { BRAND_NAME } from "@/shared/constants/brand";
+import BrandLogo from "@/shared/components/BrandLogo";
 
 export default function LoginPage() {
   const t = useTranslations("auth");
@@ -239,9 +240,7 @@ export default function LoginPage() {
           >
             <div className="mb-10">
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center">
-                  <span className="material-symbols-outlined text-white text-[20px]">hub</span>
-                </div>
+                <BrandLogo size={40} className="shrink-0" />
                 <span className="text-xl font-semibold text-text-main tracking-tight">
                   {BRAND_NAME}
                 </span>

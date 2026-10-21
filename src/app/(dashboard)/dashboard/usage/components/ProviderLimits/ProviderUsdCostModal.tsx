@@ -239,7 +239,7 @@ export default function ProviderUsdCostModal({
                     step="1"
                     value={simulatedPercent}
                     onChange={(event) => setSimulatedPercent(Number(event.target.value))}
-                    className="w-full accent-[var(--color-primary,#E54D5E)]"
+                    className="w-full accent-[var(--color-primary,#0D9488)]"
                     disabled={payload.estimatedFullQuotaUsd === null}
                   />
                 </div>
@@ -288,7 +288,7 @@ export default function ProviderUsdCostModal({
                         </div>
                         <div className="mt-2 h-2 overflow-hidden rounded-sm bg-border/60">
                           <div
-                            className="h-full rounded-sm bg-[var(--color-primary,#E54D5E)]"
+                            className="h-full rounded-sm bg-[var(--color-primary,#0D9488)]"
                             style={{ width: `${barPercent}%` }}
                           />
                         </div>

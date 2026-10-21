@@ -1,10 +1,21 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="180" height="180" rx="36" fill="url(#gradient)"/>
-  <text x="90" y="119" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="82" font-weight="700" letter-spacing="-0.5" fill="white">AN</text>
+<svg width="180" height="180" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>AI Next</title>
   <defs>
-    <linearGradient id="gradient" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#E54D5E"/>
-      <stop offset="1" stop-color="#C93D4E"/>
+    <linearGradient id="brand-gradient" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#22C55E"/>
+      <stop offset="0.5" stop-color="#2DD4BF"/>
+      <stop offset="1" stop-color="#A78BFA"/>
     </linearGradient>
   </defs>
+  <rect width="32" height="32" rx="8" fill="url(#brand-gradient)"/>
+  <g transform="translate(0.8 0)">
+    <g stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M9.6 10.6C13.6 11.4 13.8 16 17.4 16"/>
+      <path d="M9.6 21.4C13.6 20.6 13.8 16 17.4 16"/>
+      <path d="M17.4 16H24.4"/>
+      <path d="M20.6 11.9L24.7 16L20.6 20.1"/>
+    </g>
+    <circle cx="8" cy="10.2" r="2.3" fill="#fff"/>
+    <circle cx="8" cy="21.8" r="2.3" fill="#fff"/>
+  </g>
 </svg>

@@ -19,7 +19,7 @@ const useThemeStore = create<ThemeState>()(
   persist(
     (set, get) => ({
       theme: THEME_CONFIG.defaultTheme,
-      colorTheme: "coral",
+      colorTheme: "teal",
       customColor: "#3b82f6",
 
       setTheme: (theme) => {
@@ -57,8 +57,11 @@ const useThemeStore = create<ThemeState>()(
   )
 );
 
+/** Brand default — matches --color-primary in globals.css. */
+export const DEFAULT_COLOR_THEME = "teal";
+
 export const COLOR_THEMES: Record<string, string> = {
-  coral: "#e54d5e",
+  teal: "#0d9488",
   blue: "#3b82f6",
   red: "#ef4444",
   green: "#22c55e",
@@ -89,7 +92,7 @@ function applyColorTheme(colorTheme: string, customColor: string) {
   const baseColor =
     colorTheme === "custom"
       ? normalizeHexColor(customColor)
-      : COLOR_THEMES[colorTheme] || COLOR_THEMES.coral;
+      : COLOR_THEMES[colorTheme] || COLOR_THEMES[DEFAULT_COLOR_THEME];
   const hoverColor = shadeHexColor(baseColor, -0.14);
 
   root.style.setProperty("--color-primary", baseColor);

@@ -4,7 +4,7 @@ import type {
   SidebarSectionChild,
   SidebarSectionDefinition,
 } from "./types";
-import { BRAND } from "@/shared/constants/brand";
+import { applyBrand, BRAND } from "@/shared/constants/brand";
 
 // ─── Item arrays ────────────────────────────────────────────────────────────
 
@@ -68,7 +68,7 @@ const OMNI_PROXY_ITEMS: readonly SidebarItemDefinition[] = [
     id: "combos-live",
     href: "/dashboard/combos/live",
     i18nKey: "combosLive",
-    labelFallback: "Combo Studio",
+    labelFallback: applyBrand("Combo Studio"),
     subtitleKey: "combosLiveSubtitle",
     subtitleFallback: "Live routing cascade",
     icon: "account_tree",
@@ -193,7 +193,7 @@ export const COMPRESSION_CONTEXT_GROUP: SidebarItemGroup = {
       id: "context-omniglyph",
       href: "/dashboard/context/omniglyph",
       i18nKey: "contextOmniglyph",
-      labelFallback: "OmniGlyph",
+      labelFallback: applyBrand("OmniGlyph"),
       subtitleKey: "contextOmniglyphSubtitle",
       subtitleFallback: "Context-as-image",
       icon: "grain",
@@ -848,7 +848,7 @@ export const SIDEBAR_SECTIONS: readonly SidebarSectionDefinition[] = [
   {
     id: "omni-proxy",
     titleKey: "omniProxySection",
-    titleFallback: "OmniProxy",
+    titleFallback: applyBrand("OmniProxy"),
     children: [
       ...OMNI_PROXY_ITEMS,
       COMPRESSION_CONTEXT_GROUP,

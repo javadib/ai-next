@@ -29,8 +29,27 @@ test("applyBrand leaves identifiers, headers and URLs untouched", () => {
   }
 });
 
+test("applyBrand renames upstream feature names for display", () => {
+  assert.equal(applyBrand("OmniProxy", "AI Next"), "Gateway");
+  assert.equal(applyBrand("Enable the OmniGlyph engine", "AI Next"), "Enable the GlyphPack engine");
+  assert.equal(applyBrand("OmniSkills", "AI Next"), "NextSkills");
+  assert.equal(applyBrand("Omni Skills — Inbound", "AI Next"), "Next Skills — Inbound");
+  assert.equal(applyBrand("OmniConductor hub", "AI Next"), "Conductor Hub hub");
+  assert.equal(applyBrand("Combo Studio", "AI Next"), "Route Studio");
+  assert.equal(applyBrand("Embedded Services", "AI Next"), "Built-in Services");
+  assert.equal(
+    applyBrand("you → CLI → Omni → provider", "AI Next"),
+    "you → CLI → AI Next → provider"
+  );
+  assert.equal(applyBrand("official Omniroute registry", "AI Next"), "official AI Next registry");
+  // Real third-party product names and identifiers are left alone.
+  assert.equal(applyBrand("OmniCopilot", "AI Next"), "OmniCopilot");
+  assert.equal(applyBrand("/dashboard/omni-skills", "AI Next"), "/dashboard/omni-skills");
+});
+
 test("applyBrand is a no-op when the brand is the upstream name", () => {
   assert.equal(applyBrand("OmniRoute", UPSTREAM_BRAND_NAME), "OmniRoute");
+  assert.equal(applyBrand("OmniProxy", UPSTREAM_BRAND_NAME), "OmniProxy");
 });
 
 test("applyBrandToMessages rewrites every string leaf and keeps the shape", () => {

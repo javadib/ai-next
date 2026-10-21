@@ -47,10 +47,34 @@ export function brandInitials(name: string = BRAND.name): string {
  */
 const UPSTREAM_NAME_RE = /(?<![\w/@.:-])OmniRoute(?![\w-])/g;
 
-/** Replace the upstream product name with the configured brand name in display text. */
+/**
+ * Upstream feature names that identify the original project, renamed to equivalents for
+ * display only. Routes, ids, settings keys and API fields keep the upstream spelling.
+ * Order matters: longer / more specific names first.
+ */
+const DISPLAY_RENAMES: ReadonlyArray<readonly [RegExp, string]> = [
+  [/(?<![\w/@.:-])OmniConductor(?![\w-])/g, "Conductor Hub"],
+  [/(?<![\w/@.:-])OmniProxy(?![\w-])/g, "Gateway"],
+  [/(?<![\w/@.:-])OmniGlyph(?![\w-])/g, "GlyphPack"],
+  [/(?<![\w/@.:-])OmniSkills(?![\w-])/g, "NextSkills"],
+  [/(?<![\w/@.:-])Omni Skills(?![\w-])/g, "Next Skills"],
+  [/(?<![\w/@.:-])Combo Studio(?![\w-])/g, "Route Studio"],
+  [/(?<![\w/@.:-])Embedded Services(?![\w-])/g, "Built-in Services"],
+  [/(?<![\w/@.:-])Embedded services(?![\w-])/g, "Built-in services"],
+];
+
+/** Bare "Omni" / "Omniroute" used as a short product name. Applied after the renames. */
+const UPSTREAM_SHORT_NAME_RE = /(?<![\w/@.:-])Omni(?:route)?(?![\w-])/g;
+
+/**
+ * White-label display text: swaps the upstream product name for the brand name and the
+ * upstream feature names for their renamed equivalents. No-op in upstream brand mode.
+ */
 export function applyBrand(text: string, brandName: string = BRAND.name): string {
   if (!text || brandName === UPSTREAM_BRAND_NAME) return text;
-  return text.replace(UPSTREAM_NAME_RE, brandName);
+  let out = text.replace(UPSTREAM_NAME_RE, brandName);
+  for (const [pattern, replacement] of DISPLAY_RENAMES) out = out.replace(pattern, replacement);
+  return out.replace(UPSTREAM_SHORT_NAME_RE, brandName);
 }
 
 /** Deep-apply {@link applyBrand} to every string leaf of a translation messages tree. */

@@ -689,13 +689,13 @@ export default function Sidebar({
               collapsed ? "justify-center" : "flex-1 gap-3"
             )}
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
-              {customLogo ? (
+            {customLogo ? (
+              <div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-white shadow-sm">
                 <img src={customLogo} alt="" className="size-6 object-contain" />
-              ) : (
-                <BrandLogo size={22} />
-              )}
-            </div>
+              </div>
+            ) : (
+              <BrandLogo size={36} className="shrink-0 rounded-xl shadow-sm" />
+            )}
             {!collapsed && (
               <div className="min-w-0">
                 <h1 className="truncate text-base font-semibold tracking-tight text-text-main">

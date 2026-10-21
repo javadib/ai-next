@@ -14,9 +14,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="size-6 rounded bg-[#E54D5E] flex items-center justify-center text-white">
-                <BrandLogo size={16} className="text-white" />
-              </div>
+              <BrandLogo size={24} className="shrink-0" />
               <h3 className="text-white text-lg font-bold">{t("brandName")}</h3>
             </div>
             <p className="text-gray-500 text-sm max-w-xs mb-6 break-words">{t("footerTagline")}</p>
@@ -38,19 +36,19 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <h4 className="font-bold text-white">{t("product")}</h4>
             <a
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="#features"
             >
               {t("featuresLink")}
             </a>
             <a
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="/dashboard"
             >
               {t("dashboardLink")}
             </a>
             <a
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="https://github.com/diegosouzapw/OmniRoute/releases"
               target="_blank"
               rel="noopener noreferrer"
@@ -63,13 +61,13 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <h4 className="font-bold text-white">{t("resources")}</h4>
             <Link
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="/docs"
             >
               {t("documentation")}
             </Link>
             <a
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="https://github.com/diegosouzapw/OmniRoute"
               target="_blank"
               rel="noopener noreferrer"
@@ -77,7 +75,7 @@ export default function Footer() {
               {t("github")}
             </a>
             <a
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="https://www.npmjs.com/package/omniroute"
               target="_blank"
               rel="noopener noreferrer"
@@ -90,7 +88,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <h4 className="font-bold text-white">{t("legal")}</h4>
             <a
-              className="text-gray-400 hover:text-[#E54D5E] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#2DD4BF] text-sm transition-colors"
               href="https://github.com/diegosouzapw/OmniRoute/blob/main/LICENSE"
               target="_blank"
               rel="noopener noreferrer"
