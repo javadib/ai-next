@@ -109,6 +109,8 @@ export interface ApiKeyMetadata {
   allowAutoCombos?: boolean;
   catalogScope?: "all" | "combos" | "models";
   forcedModel?: string | null;
+  promptRewrite?:
+    import("@omniroute/open-sse/services/promptRewrite.ts").PromptRewriteConfig | null;
 }
 
 /**

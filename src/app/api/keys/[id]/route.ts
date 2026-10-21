@@ -100,6 +100,7 @@ export async function PATCH(request, { params }) {
       dailyUsageLimitUsd,
       weeklyUsageLimitUsd,
       chaosModeEnabled,
+      promptRewrite,
     } = validation.data;
 
     const scopeAuthError = await requireCredentialForManagementScopedKey(request, scopes);
@@ -141,6 +142,7 @@ export async function PATCH(request, { params }) {
     if (dailyUsageLimitUsd !== undefined) payload.dailyUsageLimitUsd = dailyUsageLimitUsd;
     if (weeklyUsageLimitUsd !== undefined) payload.weeklyUsageLimitUsd = weeklyUsageLimitUsd;
     if (chaosModeEnabled !== undefined) payload.chaosModeEnabled = chaosModeEnabled;
+    if (promptRewrite !== undefined) payload.promptRewrite = promptRewrite;
 
     const updated = await updateApiKeyPermissions(id, payload);
     if (!updated) {
@@ -180,6 +182,7 @@ export async function PATCH(request, { params }) {
       ...(dailyUsageLimitUsd !== undefined && { dailyUsageLimitUsd }),
       ...(weeklyUsageLimitUsd !== undefined && { weeklyUsageLimitUsd }),
       ...(chaosModeEnabled !== undefined && { chaosModeEnabled }),
+      ...(promptRewrite !== undefined && { promptRewrite }),
     });
   } catch (error) {
     if (

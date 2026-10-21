@@ -5,6 +5,14 @@ import { hasProviderQuotaBypassScope } from "@/shared/constants/apiKeyPolicyScop
 import { mergeApiKeyPermissionScopes } from "@/app/(dashboard)/dashboard/api-manager/apiManagerScopes";
 import { buildModelAccessSavePayload } from "@/app/(dashboard)/dashboard/api-manager/apiManagerPageUtils";
 import type { CatalogScope } from "@/app/(dashboard)/dashboard/api-manager/components/ApiKeyCatalogScopeSelect";
+import {
+  promptRewriteConfigFromForm,
+  promptRewriteFormFromConfig,
+  validatePromptRewriteForm,
+  PROMPT_REWRITE_MAX_TEXT_LENGTH,
+  type PromptRewriteConfig,
+  type PromptRewriteFormState,
+} from "@/app/(dashboard)/dashboard/api-manager/components/promptRewriteForm";
 
 export const MAX_KEY_NAME_LENGTH = 200;
 export const MAX_SELECTED_MODELS = 500;
@@ -126,13 +134,14 @@ export interface ApiKeyAccessData {
   dailyUsageLimitUsd?: number | null;
   weeklyUsageLimitUsd?: number | null;
   chaosModeEnabled?: boolean | null;
+  promptRewrite?: PromptRewriteConfig | null;
   createdAt?: string;
   lastUsedAt?: string | null;
   totalRequests?: number;
 }
 
 export type AccessEditorTab =
-  "general" | "models" | "combos" | "connections" | "limits" | "behaviour";
+  "general" | "models" | "combos" | "connections" | "limits" | "behaviour" | "prompt";
 
 export interface ApiKeyAccessFormState {
   name: string;
@@ -174,6 +183,8 @@ export interface ApiKeyAccessFormState {
   dailyUsageLimitUsd: string;
   weeklyUsageLimitUsd: string;
   chaosModeEnabled: boolean;
+  /** Per-key System / User prompt rewrite (Prompt rewrite tab). */
+  promptRewrite: PromptRewriteFormState;
 }
 
 export function sanitizeInput(input: string): string {
@@ -305,7 +316,8 @@ type BehaviourStateField =
   | "usageLimitEnabled"
   | "dailyUsageLimitUsd"
   | "weeklyUsageLimitUsd"
-  | "chaosModeEnabled";
+  | "chaosModeEnabled"
+  | "promptRewrite";
 
 function initialBehaviourState(
   apiKey: StoredApiKey
@@ -322,6 +334,7 @@ function initialBehaviourState(
     dailyUsageLimitUsd: positiveUsdLimitText(apiKey?.dailyUsageLimitUsd),
     weeklyUsageLimitUsd: positiveUsdLimitText(apiKey?.weeklyUsageLimitUsd),
     chaosModeEnabled: apiKey?.chaosModeEnabled === true,
+    promptRewrite: promptRewriteFormFromConfig(apiKey?.promptRewrite),
   };
 }
 
@@ -465,6 +478,7 @@ export function buildApiKeyAccessPayload(
     weeklyUsageLimitUsd: parseUsdLimitInput(formState.weeklyUsageLimitUsd),
     chaosModeEnabled: formState.chaosModeEnabled,
     forcedModel: formState.forcedModel.trim() || null,
+    promptRewrite: promptRewriteConfigFromForm(formState.promptRewrite),
   };
 }
 
@@ -480,6 +494,7 @@ export function validateForm(
     connections: [],
     limits: [],
     behaviour: [],
+    prompt: [],
   };
 
   // General tab: name validation
@@ -514,6 +529,11 @@ export function validateForm(
       errors.limits.push(tr("rateLimitPositiveError"));
       break;
     }
+  }
+
+  // Prompt rewrite tab
+  for (const key of validatePromptRewriteForm(formState.promptRewrite)) {
+    errors.prompt.push(tr(key, { max: PROMPT_REWRITE_MAX_TEXT_LENGTH }));
   }
 
   return errors;
@@ -970,7 +990,15 @@ function useBehaviourSetters(setFormState: FormStateSetter) {
     [setFormState]
   );
 
+  const setPromptRewrite = useCallback(
+    (promptRewrite: PromptRewriteFormState) => {
+      setFormState((prev) => ({ ...prev, promptRewrite }));
+    },
+    [setFormState]
+  );
+
   return {
+    setPromptRewrite,
     setNoLog,
     setAutoResolve,
     setStreamDefaultMode,

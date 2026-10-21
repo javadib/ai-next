@@ -631,6 +631,11 @@ function isSchemaAlreadyApplied(
         hasColumn(db, "usage_history", "provider_credits") &&
         hasColumn(db, "usage_history", "provider_cost_usd")
       );
+    case "213":
+      // ensureApiKeyFallbackColumns (apiKeyColumnFallbacks.ts) may have added
+      // api_keys.prompt_rewrite at boot, and a bare ADD COLUMN would then throw.
+      // Keyed by version only — renumbering the migration means renaming this case.
+      return hasColumn(db, "api_keys", "prompt_rewrite");
     default:
       return false;
   }

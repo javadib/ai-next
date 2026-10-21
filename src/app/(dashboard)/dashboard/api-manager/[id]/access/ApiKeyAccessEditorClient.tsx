@@ -22,6 +22,7 @@ import CombosTab, { type ComboOption } from "./tabs/CombosTab";
 import ConnectionsTab from "./tabs/ConnectionsTab";
 import LimitsTab from "./tabs/LimitsTab";
 import BehaviourTab from "./tabs/BehaviourTab";
+import PromptRewriteTab from "./tabs/PromptRewriteTab";
 
 const TABS: Array<{ id: AccessEditorTab; icon: string; labelKey: string }> = [
   { id: "general", icon: "tune", labelKey: "tabGeneral" },
@@ -30,6 +31,7 @@ const TABS: Array<{ id: AccessEditorTab; icon: string; labelKey: string }> = [
   { id: "connections", icon: "cable", labelKey: "tabConnections" },
   { id: "limits", icon: "speed", labelKey: "tabLimits" },
   { id: "behaviour", icon: "toggle_on", labelKey: "tabBehaviour" },
+  { id: "prompt", icon: "edit_note", labelKey: "tabPromptRewrite" },
 ];
 
 function useDebouncedValue<T>(value: T, delay: number): T {
@@ -405,6 +407,17 @@ function AccessBehaviourPanelPanelContent({ context }: { context: AccessFormCont
   );
 }
 
+function AccessPromptRewritePanelContent({ context }: { context: AccessFormContext }) {
+  const { form } = context;
+  return (
+    <PromptRewriteTab
+      formState={form.formState}
+      setPromptRewrite={form.setPromptRewrite}
+      errors={form.tabErrors.prompt}
+    />
+  );
+}
+
 function AccessHeader({ context }: { context: AccessFormContext }) {
   const { apiKey, t } = context;
   return (
@@ -523,6 +536,8 @@ function AccessPanel({ context }: { context: AccessFormContext }) {
           {activeTab === "limits" && <AccessLimitsPanelPanelContent context={context} />}
 
           {activeTab === "behaviour" && <AccessBehaviourPanelPanelContent context={context} />}
+
+          {activeTab === "prompt" && <AccessPromptRewritePanelContent context={context} />}
         </fieldset>
       </Card>
     </div>

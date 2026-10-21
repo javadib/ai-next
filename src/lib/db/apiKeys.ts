@@ -23,6 +23,10 @@ import {
 } from "./apiKeyUsageLimitFields";
 import { setNoLog } from "../compliance/noLog";
 import { resolveModelAlias } from "@omniroute/open-sse/services/modelDeprecation.ts";
+import {
+  parsePromptRewriteConfig,
+  type PromptRewriteConfig,
+} from "@omniroute/open-sse/services/promptRewrite.ts";
 import { getProviderAlias, resolveProviderId } from "@/shared/constants/providers";
 import { isSelfLoopBearer, selfLoopKeyOverrides } from "./apiKeys/selfLoopKey";
 import {
@@ -147,6 +151,7 @@ interface ApiKeyMetadata {
   allowAutoCombos: boolean;
   catalogScope: "all" | "combos" | "models";
   forcedModel: string | null;
+  promptRewrite: PromptRewriteConfig | null;
 }
 
 interface ApiKeyRow extends JsonRecord {
@@ -202,6 +207,8 @@ interface ApiKeyRow extends JsonRecord {
   catalogScope?: unknown;
   forced_model?: unknown;
   forcedModel?: unknown;
+  prompt_rewrite?: unknown;
+  promptRewrite?: unknown;
 }
 
 interface StatementLike<TRow = unknown> {
@@ -256,6 +263,7 @@ interface ApiKeyView extends JsonRecord {
   allowAutoCombos: boolean;
   catalogScope: "all" | "combos" | "models";
   forcedModel: string | null;
+  promptRewrite: PromptRewriteConfig | null;
 }
 
 // LRU cache for API key validation (valid keys only)
@@ -487,7 +495,7 @@ function getPreparedStatements(db: ApiKeysDbLike): ApiKeysStatements {
       "SELECT id, expires_at, revoked_at, is_active, is_banned FROM api_keys WHERE key_hash = ?"
     );
     _stmtGetKeyMetadata = db.prepare<ApiKeyRow>(
-      "SELECT id, name, machine_id, model_access_mode, allowed_models, blocked_models, allowed_combos, allowed_connections, allowed_quotas, no_log, auto_resolve, is_active, access_schedule, max_requests_per_day, max_requests_per_minute, throttle_delay_ms, max_sessions, revoked_at, expires_at, ip_allowlist, scopes, rate_limits, is_banned, key_hash, allowed_endpoints, stream_default_mode, cache_default_mode, codex_service_mode, disable_non_public_models, allow_usage_command, usage_limit_enabled, daily_usage_limit_usd, weekly_usage_limit_usd, chaos_mode_enabled, compression_enabled, allow_auto_combos, catalog_scope, forced_model, proxy_id FROM api_keys WHERE key_hash = ?"
+      "SELECT id, name, machine_id, model_access_mode, allowed_models, blocked_models, allowed_combos, allowed_connections, allowed_quotas, no_log, auto_resolve, is_active, access_schedule, max_requests_per_day, max_requests_per_minute, throttle_delay_ms, max_sessions, revoked_at, expires_at, ip_allowlist, scopes, rate_limits, is_banned, key_hash, allowed_endpoints, stream_default_mode, cache_default_mode, codex_service_mode, disable_non_public_models, allow_usage_command, usage_limit_enabled, daily_usage_limit_usd, weekly_usage_limit_usd, chaos_mode_enabled, compression_enabled, allow_auto_combos, catalog_scope, forced_model, prompt_rewrite, proxy_id FROM api_keys WHERE key_hash = ?"
     );
     _stmtInsertKey = db.prepare(
       "INSERT INTO api_keys (id, name, key, machine_id, model_access_mode, allowed_models, allowed_combos, allowed_connections, no_log, created_at, key_prefix, key_hash, scopes, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -563,6 +571,7 @@ export async function getApiKeys(limit?: number, offset?: number) {
     camelRow.allowAutoCombos = parseAllowAutoCombos((camelRow as JsonRecord).allowAutoCombos);
     camelRow.catalogScope = parseCatalogScope((camelRow as JsonRecord).catalogScope);
     camelRow.forcedModel = parseForcedModel((camelRow as JsonRecord).forcedModel);
+    camelRow.promptRewrite = parsePromptRewriteConfig((camelRow as JsonRecord).promptRewrite);
     Object.assign(camelRow, parseApiKeyUsageLimitFields(camelRow));
     if (typeof camelRow.id === "string" && camelRow.id.length > 0) {
       setNoLog(camelRow.id, camelRow.noLog === true);
@@ -708,6 +717,7 @@ export async function getApiKeyById(id: string) {
   camelRow.allowAutoCombos = parseAllowAutoCombos((camelRow as JsonRecord).allowAutoCombos);
   camelRow.catalogScope = parseCatalogScope((camelRow as JsonRecord).catalogScope);
   camelRow.forcedModel = parseForcedModel((camelRow as JsonRecord).forcedModel);
+  camelRow.promptRewrite = parsePromptRewriteConfig((camelRow as JsonRecord).promptRewrite);
   Object.assign(camelRow, parseApiKeyUsageLimitFields(camelRow));
   if (typeof camelRow.id === "string" && camelRow.id.length > 0) {
     setNoLog(camelRow.id, camelRow.noLog === true);
@@ -874,6 +884,7 @@ export async function updateApiKeyPermissions(
     normalized.allowAutoCombos === undefined &&
     normalized.catalogScope === undefined &&
     normalized.forcedModel === undefined &&
+    normalized.promptRewrite === undefined &&
     !hasUsageLimitUpdate(normalized as Record<string, unknown>)
   ) {
     return false;
@@ -915,6 +926,7 @@ export async function updateApiKeyPermissions(
     allowAutoCombos?: number;
     catalogScope?: string;
     forcedModel?: string | null;
+    promptRewrite?: string | null;
   } = { id };
 
   if (normalized.name !== undefined) {
@@ -1044,6 +1056,14 @@ export async function updateApiKeyPermissions(
   if (normalized.forcedModel !== undefined) {
     updates.push("forced_model = @forcedModel");
     params.forcedModel = parseForcedModel(normalized.forcedModel);
+  }
+
+  if (normalized.promptRewrite !== undefined) {
+    // Stored as validated JSON; null clears the rule. The route schema rejects invalid
+    // objects, and re-parsing here keeps a direct caller from persisting garbage.
+    const promptRewrite = parsePromptRewriteConfig(normalized.promptRewrite);
+    updates.push("prompt_rewrite = @promptRewrite");
+    params.promptRewrite = promptRewrite ? JSON.stringify(promptRewrite) : null;
   }
 
   appendUsageLimitUpdates(normalized as Record<string, unknown>, updates, params);
@@ -1463,6 +1483,7 @@ export async function getApiKeyMetadata(
       allowAutoCombos: true,
       catalogScope: "all",
       forcedModel: null,
+      promptRewrite: null,
       ...selfLoopKeyOverrides(key),
     };
   }
@@ -1561,6 +1582,7 @@ export async function getApiKeyMetadata(
       (record as JsonRecord).catalog_scope ?? (record as JsonRecord).catalogScope
     ),
     forcedModel: parseForcedModel(record.forced_model ?? record.forcedModel),
+    promptRewrite: parsePromptRewriteConfig(record.prompt_rewrite ?? record.promptRewrite),
     ...parseApiKeyUsageLimitFields(record as JsonRecord),
   };
 

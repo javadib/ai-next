@@ -1,4 +1,5 @@
 import type { ApiKeyCodexServiceMode } from "../../../shared/constants/codexServiceMode";
+import type { PromptRewriteConfig } from "@omniroute/open-sse/services/promptRewrite.ts";
 import type { AccessSchedule, RateLimitRule } from "./types";
 import { normalizeModelAccessUpdate, type ModelAccessMode } from "./modelAccessMode";
 
@@ -37,6 +38,8 @@ export interface ApiKeyPermissionsUpdate {
   allowAutoCombos?: boolean;
   catalogScope?: "all" | "combos" | "models";
   forcedModel?: string | null;
+  /** Per-key prompt rewrite rule; null clears it. */
+  promptRewrite?: PromptRewriteConfig | null;
 }
 
 export function normalizeApiKeyPermissionsUpdate(
@@ -82,5 +85,6 @@ export function normalizeApiKeyPermissionsUpdate(
     allowAutoCombos: update.allowAutoCombos,
     catalogScope: update.catalogScope,
     forcedModel: update.forcedModel,
+    promptRewrite: update.promptRewrite,
   };
 }

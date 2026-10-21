@@ -16,6 +16,7 @@ import {
 import { MAX_TIMER_TIMEOUT_MS } from "@/shared/utils/runtimeTimeouts";
 
 import { accessScheduleSchema } from "./misc.ts";
+import { promptRewriteConfigSchema } from "@omniroute/open-sse/services/promptRewrite.ts";
 
 // ──── API Key Schemas ────
 
@@ -65,6 +66,8 @@ export const createKeySchema = z
     expiresAt: z.string().datetime().nullable().optional(),
     scopes: z.array(z.string().trim().min(1).max(64)).max(32).optional(),
     allowedConnections: z.array(z.string().uuid()).min(1).max(100).optional(),
+    // Per-key System/User prompt rewrite applied before dispatch (texts capped at 20k chars).
+    promptRewrite: promptRewriteConfigSchema.nullable().optional(),
   })
   .superRefine((value, ctx) => {
     requireConsistentModelAccess(value, ctx);
@@ -193,6 +196,8 @@ export const updateKeyPermissionsSchema = z
     dailyUsageLimitUsd: z.coerce.number().min(0).optional().nullable(),
     weeklyUsageLimitUsd: z.coerce.number().min(0).optional().nullable(),
     chaosModeEnabled: z.boolean().optional(),
+    // Per-key System/User prompt rewrite; null clears it (texts capped at 20k chars).
+    promptRewrite: promptRewriteConfigSchema.nullable().optional(),
   })
   .superRefine((value, ctx) => {
     if (value.modelAccessMode === "all" && value.allowedModels && value.allowedModels.length > 0) {
@@ -254,7 +259,8 @@ export const updateKeyPermissionsSchema = z
       value.usageLimitEnabled === undefined &&
       value.dailyUsageLimitUsd === undefined &&
       value.weeklyUsageLimitUsd === undefined &&
-      value.chaosModeEnabled === undefined
+      value.chaosModeEnabled === undefined &&
+      value.promptRewrite === undefined
     ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

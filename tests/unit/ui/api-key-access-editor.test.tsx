@@ -192,7 +192,7 @@ describe("ApiKeyAccessEditorClient", () => {
     await renderLoaded();
 
     const tabs = screen.getAllByRole("tab");
-    expect(tabs.length).toBe(6);
+    expect(tabs.length).toBe(7);
 
     const generalTab = screen.getByRole("tab", { name: /general/i });
     expect(generalTab.getAttribute("aria-selected")).toBe("true");
@@ -224,10 +224,10 @@ describe("ApiKeyAccessEditorClient", () => {
     expect(modelsTab.getAttribute("aria-selected")).toBe("true");
 
     fireEvent.keyDown(modelsTab, { key: "End" });
-    const behaviourTab = screen.getByRole("tab", { name: /behaviour/i });
-    expect(behaviourTab.getAttribute("aria-selected")).toBe("true");
+    const promptRewriteTab = screen.getByRole("tab", { name: /prompt rewrite/i });
+    expect(promptRewriteTab.getAttribute("aria-selected")).toBe("true");
 
-    fireEvent.keyDown(behaviourTab, { key: "Home" });
+    fireEvent.keyDown(promptRewriteTab, { key: "Home" });
     const generalTab = screen.getByRole("tab", { name: /general/i });
     expect(generalTab.getAttribute("aria-selected")).toBe("true");
   });
@@ -442,6 +442,7 @@ describe("ApiKeyAccessEditorClient", () => {
       weeklyUsageLimitUsd: null,
       chaosModeEnabled: false,
       forcedModel: null,
+      promptRewrite: null,
     });
   });
 

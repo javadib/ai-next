@@ -183,6 +183,13 @@ const unrestrictedState: ApiKeyAccessFormState = {
   weeklyUsageLimitUsd: "",
   chaosModeEnabled: false,
   forcedModel: "",
+  promptRewrite: {
+    enabled: false,
+    systemMode: "off",
+    systemText: "",
+    userMode: "off",
+    userText: "",
+  },
 };
 
 test("initial state matches the legacy modal: unrestricted key (combo/* means all combos)", () => {
@@ -375,6 +382,7 @@ test("PATCH body matches the legacy handler: unrestricted key", () => {
     weeklyUsageLimitUsd: null,
     chaosModeEnabled: false,
     forcedModel: null,
+    promptRewrite: null,
   });
 });
 
@@ -414,6 +422,7 @@ test("PATCH body matches the legacy handler: restricted models + combos", () => 
     weeklyUsageLimitUsd: null,
     chaosModeEnabled: false,
     forcedModel: null,
+    promptRewrite: null,
   });
 });
 
@@ -452,6 +461,7 @@ test("PATCH body matches the legacy handler: connections restricted", () => {
     weeklyUsageLimitUsd: null,
     chaosModeEnabled: false,
     forcedModel: null,
+    promptRewrite: null,
   });
 });
 
@@ -499,6 +509,7 @@ test("PATCH body matches the legacy handler: limits + schedule", () => {
     weeklyUsageLimitUsd: 150,
     chaosModeEnabled: false,
     forcedModel: null,
+    promptRewrite: null,
   });
 });
 
@@ -537,6 +548,7 @@ test("PATCH body matches the legacy handler: behaviour toggles", () => {
     weeklyUsageLimitUsd: null,
     chaosModeEnabled: true,
     forcedModel: null,
+    promptRewrite: null,
   });
 });
 
@@ -596,6 +608,7 @@ test("PATCH body matches the legacy handler after edits (sanitize, clamp, filter
     weeklyUsageLimitUsd: null,
     chaosModeEnabled: false,
     forcedModel: null,
+    promptRewrite: null,
   });
 });
 
@@ -638,6 +651,7 @@ test("validation reports each message on the tab that owns the field", () => {
     connections: ["selectAtLeastOneConnection"],
     limits: ["throttleDelayRangeError", "maxSessionsNegativeError", "rateLimitPositiveError"],
     behaviour: [],
+    prompt: [],
   });
 });
 
@@ -645,4 +659,41 @@ test("validation accepts an empty combo restriction (#12267)", () => {
   const errors = validateForm({ ...unrestrictedState, allowAllCombos: false, selectedCombos: [] });
   assert.deepEqual(errors.combos, []);
   assert.equal(Object.values(errors).flat().length, 0);
+});
+
+test("prompt rewrite: stored rule loads into the form and saves back unchanged", () => {
+  const promptRewrite = {
+    enabled: true,
+    system: { mode: "append" as const, text: "Be concise." },
+    user: { mode: "template" as const, text: "Q: {{user_prompt}}" },
+  };
+  const key = { ...keyUnrestricted, promptRewrite };
+  const state = createInitialFormState(key);
+  assert.deepEqual(state.promptRewrite, {
+    enabled: true,
+    systemMode: "append",
+    systemText: "Be concise.",
+    userMode: "template",
+    userText: "Q: {{user_prompt}}",
+  });
+  assert.deepEqual(buildApiKeyAccessPayload(state, key).promptRewrite, promptRewrite);
+
+  const off = { ...state, promptRewrite: { ...state.promptRewrite, userMode: "off" as const } };
+  assert.deepEqual(buildApiKeyAccessPayload(off, key).promptRewrite, {
+    enabled: true,
+    system: promptRewrite.system,
+    user: null,
+  });
+});
+
+test("prompt rewrite: oversized text is reported on the prompt tab", () => {
+  const errors = validateForm({
+    ...unrestrictedState,
+    promptRewrite: {
+      ...unrestrictedState.promptRewrite,
+      systemMode: "replace",
+      systemText: "x".repeat(20_001),
+    },
+  });
+  assert.deepEqual(errors.prompt, ["promptRewriteTextTooLong"]);
 });

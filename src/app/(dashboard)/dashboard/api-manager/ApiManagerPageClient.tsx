@@ -24,6 +24,12 @@ import { extractApiErrorMessage } from "@/shared/http/apiErrorMessage";
 import { hasProviderQuotaBypassScope } from "@/shared/constants/apiKeyPolicyScopes";
 import RoutingEntryLink from "@/shared/components/routing/RoutingEntryLink";
 import { ALL_COMBOS_ACCESS_RULE } from "@/shared/constants/comboAccess";
+import { PromptRewriteSettings } from "./components/PromptRewriteSettings";
+import {
+  DEFAULT_PROMPT_REWRITE_FORM,
+  promptRewriteConfigFromForm,
+  type PromptRewriteFormState,
+} from "./components/promptRewriteForm";
 
 // Constants for validation
 const MAX_KEY_NAME_LENGTH = 200;
@@ -124,6 +130,9 @@ export default function ApiManagerPageClient() {
   const [newKeySelfUsageEnabled, setNewKeySelfUsageEnabled] = useState(true);
   const [newKeyAccountQuotaEnabled, setNewKeyAccountQuotaEnabled] = useState(false);
   const [newKeyAllowUsageCommand, setNewKeyAllowUsageCommand] = useState(false);
+  const [newKeyPromptRewrite, setNewKeyPromptRewrite] = useState<PromptRewriteFormState>(
+    DEFAULT_PROMPT_REWRITE_FORM
+  );
   const [createdKey, setCreatedKey] = useState<string | null>(null);
   const [pageError, setPageError] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
@@ -418,6 +427,7 @@ export default function ApiManagerPageClient() {
     setIsSubmitting(true);
     setNameError(null);
     setCreateError(null);
+    const newKeyPromptRewriteConfig = promptRewriteConfigFromForm(newKeyPromptRewrite);
 
     try {
       const res = await fetch("/api/keys", {
@@ -431,6 +441,7 @@ export default function ApiManagerPageClient() {
             selfAccountQuotaEnabled: newKeyAccountQuotaEnabled,
           }),
           allowUsageCommand: newKeyAllowUsageCommand,
+          ...(newKeyPromptRewriteConfig && { promptRewrite: newKeyPromptRewriteConfig }),
         }),
       });
       const data = await res.json();
@@ -443,6 +454,7 @@ export default function ApiManagerPageClient() {
         setNewKeySelfUsageEnabled(true);
         setNewKeyAccountQuotaEnabled(false);
         setNewKeyAllowUsageCommand(false);
+        setNewKeyPromptRewrite(DEFAULT_PROMPT_REWRITE_FORM);
         setShowAddModal(false);
       } else {
         setCreateError(extractApiErrorMessage(data, t("failedCreateKey")));
@@ -1114,6 +1126,7 @@ export default function ApiManagerPageClient() {
           setNewKeySelfUsageEnabled(true);
           setNewKeyAccountQuotaEnabled(false);
           setNewKeyAllowUsageCommand(false);
+          setNewKeyPromptRewrite(DEFAULT_PROMPT_REWRITE_FORM);
           setNameError(null);
           setCreateError(null);
         }}
@@ -1229,6 +1242,7 @@ export default function ApiManagerPageClient() {
               </button>
             </div>
           </div>
+          <PromptRewriteSettings value={newKeyPromptRewrite} onChange={setNewKeyPromptRewrite} />
           {createError && (
             <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30">
               <span className="material-symbols-outlined text-red-500 text-sm">error</span>
@@ -1244,6 +1258,7 @@ export default function ApiManagerPageClient() {
                 setNewKeySelfUsageEnabled(true);
                 setNewKeyAccountQuotaEnabled(false);
                 setNewKeyAllowUsageCommand(false);
+                setNewKeyPromptRewrite(DEFAULT_PROMPT_REWRITE_FORM);
                 setNameError(null);
                 setCreateError(null);
               }}

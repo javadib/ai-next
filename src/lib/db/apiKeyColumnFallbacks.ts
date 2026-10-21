@@ -74,6 +74,8 @@ export const API_KEY_COLUMN_FALLBACKS = [
   },
   // Per-key enforced routing target (NULL = not pinned). See resolveApiKeyForcedModel.
   { name: "forced_model", definition: "forced_model TEXT" },
+  // Per-key prompt rewrite config (JSON, NULL = off). See open-sse/services/promptRewrite.ts.
+  { name: "prompt_rewrite", definition: "prompt_rewrite TEXT" },
 ] as const;
 
 interface ApiKeySchemaDb {

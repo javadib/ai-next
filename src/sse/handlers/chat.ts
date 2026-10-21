@@ -13,6 +13,7 @@ import { normalizeResponsesPreviousResponseIdMode } from "@omniroute/open-sse/ut
 import { FORMATS } from "@omniroute/open-sse/translator/formats.ts";
 import { resolveRoutingModel, RoutingModelOps } from "./resolveRoutingModel";
 import { resolveApiKeyForcedModel } from "./apiKeyForcedModel";
+import { applyApiKeyPromptRewrite } from "./apiKeyPromptRewrite";
 import {
   getProviderCredentialsWithQuotaPreflight,
   markAccountUnavailable,
@@ -962,6 +963,12 @@ async function handleChatImplementation(
   // runtimeOptions -> executeChatWithBreaker -> handleChatCore.
   const videoBridgeLog = deriveVideoBridgeLog(preCallGuardrails.results, body);
   telemetry.endPhase();
+
+  // Per-API-key prompt rewrite (System / last User prompt). Runs once here — after key
+  // policy and the pre-call guardrails (which judge the client's own prompt, not the
+  // operator's trusted text) and before hooks, routing and combo fan-out, so every
+  // target/retry sees the same rewritten body. See open-sse/services/promptRewrite.ts.
+  body = applyApiKeyPromptRewrite(body, apiKeyInfo, sourceFormat, log);
 
   // Agentic conversation tracking (X-ConversationId): resolved once per
   // incoming HTTP request, before combo dispatch / credential retries, so

@@ -17,6 +17,7 @@ import {
 } from "@/lib/api/requireManagementAuth";
 import { normalizeSelfServiceScopesForCreate } from "@/shared/constants/selfServiceScopes";
 import * as log from "@/sse/utils/logger";
+import type { PromptRewriteConfig } from "@omniroute/open-sse/services/promptRewrite.ts";
 
 function parsePagination(request: Request) {
   const url = new URL(request.url);
@@ -44,6 +45,7 @@ function createPermissionOverrides(data: {
   dailyUsageLimitUsd?: number | null;
   weeklyUsageLimitUsd?: number | null;
   chaosModeEnabled?: boolean;
+  promptRewrite?: PromptRewriteConfig | null;
 }) {
   const overrides = {
     ...(data.noLog === true && { noLog: true }),
@@ -54,6 +56,7 @@ function createPermissionOverrides(data: {
       weeklyUsageLimitUsd: data.weeklyUsageLimitUsd,
     }),
     ...(data.chaosModeEnabled === true && { chaosModeEnabled: true }),
+    ...(data.promptRewrite && { promptRewrite: data.promptRewrite }),
   };
   return Object.keys(overrides).length > 0 ? overrides : null;
 }
@@ -111,6 +114,7 @@ export async function POST(request) {
       weeklyUsageLimitUsd,
       chaosModeEnabled,
       expiresAt,
+      promptRewrite,
     } = validation.data;
 
     const normalizedScopes = normalizeSelfServiceScopesForCreate(scopes);
@@ -159,6 +163,7 @@ export async function POST(request) {
         streamDefaultMode: "legacy",
         compressionEnabled: true,
         cacheDefaultMode: "legacy",
+        promptRewrite: promptRewrite ?? null,
       },
       { status: 201 }
     );
